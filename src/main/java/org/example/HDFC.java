@@ -1,12 +1,13 @@
 package org.example;
 
-public class RBI {
+public class HDFC implements Bank{
     float balance;
     int count;
     float roi;
+    float CCroi;
 
-    public RBI() {
-        balance = 1000.0f;
+    public HDFC() {
+        balance = minBalance;
         count = 0;
         roi = 6;
     }
@@ -30,11 +31,33 @@ public class RBI {
         double intrest = amount * Math.pow((1 + (roi / 100.0)), years);
         System.out.println("The interest accumulated over years is " +  (intrest - amount));
     }
-    public void applyLoan(float amount, int years) {
+    public void applyLoan(LoanType loanType, float amount, int years) {
+        float rate;
+        switch (loanType) {
+            case Home: {
+                rate = 5;
+                break;
+            }
+            case Education: {
+                rate = 3;
+                break;
+            }
+            case Personal: {
+                rate = 6;
+                break;
+            }
+            case Car: {
+                rate = 8;
+                break;
+            }
+            default: {
+                rate = roi;
+            }
+        }
         float prinDeduction = amount / years;
         System.out.println("Interest per year will be as following");
         for (int i = 0; i < years; i++) {
-            System.out.println(amount * roi * 0.01);
+            System.out.println(amount * rate * 0.01);
             amount -= prinDeduction;
         }
     }
