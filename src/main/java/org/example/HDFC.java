@@ -1,35 +1,70 @@
 package org.example;
 
-public class HDFC implements Bank{
-    float balance;
-    int count;
-    float roi;
-    float CCroi;
+import java.util.HashMap;
+import java.util.Map;
 
-    public HDFC() {
-        balance = minBalance;
-        count = 0;
+public class HDFC implements Bank{
+    Map<Customer, Account> customerMap;
+    private float roi;
+    private float CCroi;
+    private float loanRoi;
+    private Customer curr;
+    private Account currAcc;
+
+    static HDFC instance = null;
+
+    private HDFC() {
         roi = 6;
+        CCroi = 2;
+        loanRoi = 1;
+        customerMap = new HashMap<Customer, Account>();
     }
 
+    public static HDFC getInstance() {
+        if (instance == null) {
+            instance = new HDFC();
+        }
+        return instance;
+    }
+
+    public float getMinBalance() {
+        return minBalance;
+    }
+
+    public void setCurrent(Customer c) {
+        curr = c;
+        currAcc = customerMap.get(c);
+    }
+
+    public void createAccount(Customer c) {
+        customerMap.put(c, new Account(minBalance));
+    }
+
+    public boolean isCustomer(Customer c) {
+        return customerMap.containsKey(c);
+    }
+
+
     public void depositMoney(float amt) {
-        this.balance += amt;
+//        customerMap.get(curr).balance += amt;
+        currAcc.balance += amt;
     }
     public void withdrawMoney(float amt){
         float toWithdraw = amt;
-        float mul = count > 2 ? 0.01f: 0f;
+        float mul = currAcc.count > 2 ? 0.01f: 0f;
         toWithdraw += amt * mul;
-        if (this.balance - toWithdraw > 1000) {
-            this.balance -= toWithdraw;
-            this.count ++;
-            System.out.println("Amount of " + toWithdraw + " withdrew current balance is " + this.balance);
+        float bal = currAcc.balance;
+        if (bal - toWithdraw > 1000) {
+            currAcc.balance -= toWithdraw;
+            currAcc.count ++;
+            System.out.println("Amount of " + amt + " withdrawn." + (toWithdraw - amt) + " is charged extra. Current balance is " + currAcc.balance);
         } else {
             System.out.println("Cannot withdraw. Not enough balance.");
         }
     }
     public void openFD(float amount, int years) {
-        double intrest = amount * Math.pow((1 + (roi / 100.0)), years);
-        System.out.println("The interest accumulated over years is " +  (intrest - amount));
+        double interest = amount * Math.pow((1 + (roi / 100.0)), years);
+        System.out.println("The interest accumulated over years is " +  (interest - amount));
     }
     public void applyLoan(LoanType loanType, float amount, int years) {
         float rate;
@@ -51,7 +86,7 @@ public class HDFC implements Bank{
                 break;
             }
             default: {
-                rate = roi;
+                rate = loanRoi;
             }
         }
         float prinDeduction = amount / years;
@@ -63,6 +98,9 @@ public class HDFC implements Bank{
     }
     public void applyCreditCard() {}
     public float getBalance() {
-        return 0.0f;
+        return currAcc.balance;
+    }
+    public int getTotalCustomers() {
+        return customerMap.size();
     }
 }

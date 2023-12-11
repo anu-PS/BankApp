@@ -1,20 +1,27 @@
 package org.example;
 
-public class Customer {
+public class Customer implements Comparable<Customer> {
     String customerName, customerEmail, customerAddress, customerGender, customerAadhar, customerPhone;
-    float balance;
 
-    public Customer() {
-    }
-
-    public Customer(String customerName, String customerEmail, String customerAddress, String customerGender, String customerAadhar, String customerPhone, float balance) {
+    public Customer(String customerName, String customerEmail, String customerAddress, String customerGender, String customerAadhar, String customerPhone) {
         this.customerName = customerName;
         this.customerEmail = customerEmail;
         this.customerAddress = customerAddress;
         this.customerGender = customerGender;
         this.customerAadhar = customerAadhar;
         this.customerPhone = customerPhone;
-        this.balance = balance;
+    }
+
+    public int compareTo(Customer other) {
+        return customerAadhar.compareTo(other.customerAadhar);
+    }
+
+    public int hashCode() {
+        return customerAadhar.hashCode();
+    }
+
+    public boolean equals(Object other) {
+        return (other instanceof Customer) && (customerAadhar.equals(((Customer) other).customerAadhar));
     }
 
     public String getCustomerName() {
@@ -65,11 +72,7 @@ public class Customer {
         this.customerPhone = customerPhone;
     }
 
-    public float getBalance() {
-        return balance;
-    }
-
-    public void setBalance(float balance) {
-        this.balance = balance;
+    public void showBalance() {
+        System.out.println("NOT IMPLEMENTED YET: Class Customer: method showBalance");
     }
 }
