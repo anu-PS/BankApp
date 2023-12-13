@@ -23,6 +23,7 @@ public class Main {
         customers = new HashMap<>();
     }
 
+
     public static void main(String[] args) {
         Main obj = new Main();
 
@@ -50,7 +51,7 @@ public class Main {
 
             switch (obj.selectedBank) {
                 case 1: {
-//                    bank = new ICICI();
+                    bank = ICICI.getInstance();
                     break;
                 }
                 case 2: {
@@ -149,10 +150,6 @@ public class Main {
         System.out.println("The total number of customers in our IBS is " + customers.size());
         System.out.println("The number of customers with account is " + HDFC.getInstance().getTotalCustomers());
         System.out.println("The number of customers with account is " + ICICI.getInstance().getTotalCustomers());
-
-
-
-
     }
 
     public String takeStringInput(String msg) {
@@ -180,7 +177,7 @@ public class Main {
 
     public float takeFloatInput(String msg) {
         System.out.println(msg);
-        float ret = 0f;
+        float ret = 0.0f;
         try {
             ret = Float.parseFloat(br.readLine());
         } catch (IOException e) {
